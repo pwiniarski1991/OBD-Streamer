@@ -37,7 +37,6 @@ class Home extends React.Component {
         }
     }
     render() {
-        console.log('streams: ', this.props.streams);
         return (
             <div>
                 <h2>Streams</h2>
