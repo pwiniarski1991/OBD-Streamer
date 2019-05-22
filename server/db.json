@@ -1,0 +1,22 @@
+{
+  "streams": [
+    {
+      "title": "test",
+      "description": "test2",
+      "userId": "112380497539673151594",
+      "id": 1
+    },
+    {
+      "title": "good",
+      "description": "tasty",
+      "userId": "112380497539673151594",
+      "id": 2
+    },
+    {
+      "title": "cheers2",
+      "description": "delicious, snacky",
+      "userId": "112380497539673151594",
+      "id": 3
+    }
+  ]
+}
