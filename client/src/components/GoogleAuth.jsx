@@ -1,9 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { signIn, signOut } from './../actions'
+import Error from './Error';
 
 
 class GoogleAuth extends React.Component {
+    state = {
+       error: '' 
+    }
     handleClick = () => {
         if(this.props.isSignedIn) {
             this.auth.signOut();
@@ -17,12 +21,17 @@ class GoogleAuth extends React.Component {
         : this.props.signOut()
     }
     render() {
-        const text = this.props.isSignedIn ? 'logout' : 'login';
+        const label = this.props.isSignedIn ? 'logout' : 'login';
+        const { error } = this.state;
+        const errorComp = error.length ? <Error text={error} /> : null;
         return (
-            <button className="ui red google button" onClick={this.handleClick}>
-                <i className="google icon"></i>
-                { text }
-            </button>
+            <>
+                <button className="ui red google button" onClick={this.handleClick}>
+                    <i className="google icon"></i>
+                    { label }
+                </button>
+                { errorComp }
+            </>
         )
     }
     componentDidMount() {
@@ -32,9 +41,11 @@ class GoogleAuth extends React.Component {
                 scope: 'email',
                 prompt: 'select_account'
             }).then(() => {
-                this.auth = window.gapi.auth2.getAuthInstance();
+                this.auth = window.gapi.auth2.getAuthInstance() || {};
                 this.OAuthChange(this.auth.isSignedIn.get());
                 this.auth.isSignedIn.listen(this.OAuthChange)
+            }).catch(error => {
+                this.setState({ error });
             })
         });
     }

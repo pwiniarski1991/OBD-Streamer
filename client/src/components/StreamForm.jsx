@@ -1,15 +1,12 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import Error from './Error'
 
 
 class StreamForm extends React.Component {
     renderError({ touched, error}) {
         if(touched && error)
-            return (
-                <div className="ui error message">
-                    <div className="header">{error}</div>
-                </div>
-            )
+            return <Error text={error} />
     }
     renderInput = ({ input, label, meta }) => {
         return (

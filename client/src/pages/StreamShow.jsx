@@ -1,22 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { fetchStream } from './../actions'
+import Loader from './../components/Loader'
+import Error from './../components/Error'
 
 
 class StreamShow extends React.Component {
+    state = { error: '' }
     render() {
         const { stream } = this.props;
-        if(!stream) return <div>Loading...</div>
-        return (
+        const { error } = this.state;
+        if(!stream) return <Loader />
+        return (!error.length ?
             <div>
                 <h1>{stream.title}</h1>
                 <h5>{stream.description}</h5>
                 StreamShow
-            </div>
+        </div> : <Error text={error} />
         )
     }
     componentDidMount() {
         this.props.fetchStream(this.props.match.params.id)
+        .catch(error => this.setState({ error }))
     }
 }
 

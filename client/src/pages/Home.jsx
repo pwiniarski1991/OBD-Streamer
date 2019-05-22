@@ -2,9 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchStreams } from './../actions'
+import Loader from './../components/Loader'
+import Error from './../components/Error'
 
 
 class Home extends React.Component {
+    state = { error: '' }
     renderList() {
         return this.props.streams.map(s => (
             <div className="item" key={s.id}>
@@ -37,19 +40,20 @@ class Home extends React.Component {
         }
     }
     render() {
-        console.log('streams: ', this.props.streams);
-        return (
+        if(!this.props.streams.length) return <Loader />
+        const { error } = this.state;
+        return ( 
             <div>
                 <h2>Streams</h2>
+               { !error.length ? 
                 <div className="ui celled list">
                     {this.renderList()}
-                </div>
-                {this.renderCreate()}
-            </div>
-        )
+                </div> : <Error text={error} />  }
+                { this.renderCreate() }
+        </div> )
     }
     componentDidMount() {
-        this.props.fetchStreams();
+        this.props.fetchStreams().catch(error => this.setState({ error }))
     }
 }
 
